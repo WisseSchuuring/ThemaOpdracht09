@@ -7,6 +7,7 @@ output: pdf_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
 ```
 
 ## Day 1 Tuesday 14th of September, 2021
@@ -17,6 +18,15 @@ Downloaded the dataset from https://www.kaggle.com/inputblackboxoutput/crab-body
 Description
 This dataset has 200 rows and 8 columns, describing 5 morphological measurements on 50 crabs each of two colour forms and both sexes, of the species Leptograpsus variegatus collected at Fremantle, W. Australia.
 
+SP = Species: "B" or "O" for blue or orange.
+sex = M- Male F - Female
+index = Unique row identifier
+FL = Frontal lobe size (mm)
+RW = Rear width (mm)
+CL = Carapace length (mm)
+CW = Carapace width (mm)
+BD = Body depth (mm)
+
 Source
 Campbell, N.A. and Mahon, R.J. (1974) A multivariate study of variation in two species of rock crab of genus Leptograpsus. Australian Journal of Zoology 22, 417–425.
 
@@ -24,3 +34,21 @@ References
 Venables, W. N. and Ripley, B. D. (2002) Modern Applied Statistics with S. Fourth edition. Springer.
 
 Created a Github account along with a repo, and pushed the dataset and log file along with everything else "git" into it.
+
+Read the csv file and attempted to create a handful of plots with its contents.
+
+Succesfully plotted the crabs' Body Depth in relation to its Rear Width, and comparing it with its species and sex.
+
+```{r}
+CrabData <- read.csv(file = 'data/CrabData.csv')
+CrabData
+
+ggplot(CrabData, aes(y = BD, x = RW, color=sp, shape = sex)) +
+  geom_point() +
+  scale_x_continuous() +
+  geom_jitter() +
+  scale_color_manual(values=c("Blue","Orange"))
+
+
+
+```
