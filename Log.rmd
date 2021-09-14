@@ -1,0 +1,14 @@
+---
+title: "ThemaOpdracht09Log"
+author: "Wisse Schuuring"
+date: "9/14/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Day 1 Tuesday 14th of September, 2021
+
+From the github of michielnoback chosen the "Crab body metrics" dataset.
