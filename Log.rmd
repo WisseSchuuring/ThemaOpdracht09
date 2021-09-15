@@ -140,3 +140,8 @@ ggplot(CrabData, aes(y=RW, x=CL, col=sex)) +
 All individuals, including 20 not used in the study, were correctly identified for colour form.
 The clear separation of the blue and orange forms achieved by canonical analysis supports the
 previously determined specific status of the two forms. 
+
+```{r}
+str(CrabData)
+
+```
