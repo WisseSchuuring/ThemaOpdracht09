@@ -143,6 +143,5 @@ previously determined specific status of the two forms.
 
 ```{r}
 str(CrabData)
-stinky
 
 ```
