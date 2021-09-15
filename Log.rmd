@@ -37,18 +37,106 @@ Created a Github account along with a repo, and pushed the dataset and log file 
 
 Read the csv file and attempted to create a handful of plots with its contents.
 
-Succesfully plotted the crabs' Body Depth in relation to its Rear Width, and comparing it with its species and sex.
+Successfully plotted the crabs' Body Depth in relation to its Rear Width, and comparing it with its species and sex.
 
 ```{r}
-CrabData <- read.csv(file = 'data/CrabData.csv')
-CrabData
+#Read in the libraries
+library(ggplot2)
 
-ggplot(CrabData, aes(y = BD, x = RW, color=sp, shape = sex)) +
+#Read in the dataset
+CrabData <- read.csv(file = 'data/CrabData.csv')
+CrabData 
+
+#Give the 5 values of the dataset
+summary(CrabData)
+
+#Create a plot of both species
+ggplot(CrabData, aes(y = RW, x = BD, color=sex, shape = sp)) +
   geom_point() +
   scale_x_continuous() +
   geom_jitter() +
+  geom_smooth() +
   scale_color_manual(values=c("Blue","Orange"))
 
 
+#Create a boxplot
+boxplot(CrabData$RW, CrabData$BD)
 
 ```
+
+
+
+# Day 2 Wednesday 15th of September, 2021
+
+
+
+Successfully created two separate plots for the two species.
+
+```{r}
+#Read in the libraries
+library(ggplot2)
+library(dplyr)
+
+#Read in the dataset
+CrabData <- read.csv(file = 'data/CrabData.csv')
+CrabData 
+
+#Filter the datasets on their species
+CrabDataB <- filter(CrabData, sp == "B")
+CrabDataO <- filter(CrabData, sp == "O")
+
+#Give the 5 values of the dataset
+summary(CrabData)
+
+#Create a plot of both species
+ggplot(CrabData, aes(y = RW, x = BD, color=sex, shape = sp)) +
+  geom_point() +
+  scale_x_continuous() +
+  geom_jitter() +
+  geom_smooth() +
+  scale_color_manual(values=c("Blue","Orange"))
+
+#Create a plot of only the blue species 
+ggplot(CrabDataB, aes(y = RW, x = BD)) +
+  geom_point() +
+  scale_x_continuous() +
+  geom_jitter() +
+  geom_smooth(col = "blue")
+
+#Create a plot of only the orange species
+ggplot(CrabDataO, aes(y = RW, x = BD)) +
+  geom_point() +
+  scale_x_continuous() +
+  geom_jitter() +
+  geom_smooth(col = "orange")
+
+#Create a boxplot
+boxplot(CrabData$RW, CrabData$BD)
+
+```
+The first canonical variate, which differentiates between the two species, represents a contrast
+between the carapace width relative to the width of the front lip and the depth of the body;
+the blue-form species has a greater relative carapace width than has the orange form. 
+
+```{r}
+#Create a plot showing the carapace width against the frontal lobe size of the two species
+ggplot(CrabData, aes(y=CW, x=FL, col=sp)) +
+  geom_point() +
+  geom_jitter() +
+  scale_colour_manual(values = c("Blue","Orange"))
+
+```
+The second canonical variate, which presents a contrast between the rear width and the carapace
+length, identifies males and females within each species; males have a greater relative carapace
+length than have females. 
+
+```{r}
+ggplot(CrabData, aes(y=RW, x=CL, col=sex)) +
+  geom_point() +
+  geom_jitter() +
+  scale_colour_manual(values = c("Red","Dark Green"))
+```
+
+All individuals, including 20 not used in the study, were correctly identified for colour form.
+The clear separation of the blue and orange forms achieved by canonical analysis supports the
+previously determined specific status of the two forms. 
