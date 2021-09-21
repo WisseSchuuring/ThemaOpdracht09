@@ -1,0 +1,9 @@
+Name,Full name, Data type, Unit, Description
+SP, Species,chr,N/A,Blue and Orange define the two species of purple rock crab.
+sex,Sex,chr,N/A,Male and Female determine the sex of the purple rock crab.
+index,Unique Row Identifier,int,num,Unique row identifier for the purple rock crab.
+FL,Frontal lobe size,dbl,mm,The frontal lobe size of the purple rock crab.
+RW,Rear width,dbl,mm,The Rear width of the purple rock crab.
+CL,Carapace length,dbl,mm,The carapace length of the purple rock crab.
+CW,Carapace width,dbl,mm,The carapace width of the purple rock crab.
+BD,Body depth,dbl,mm,he vertical distance between the dorsal and ventral margins of the purple rock crab.

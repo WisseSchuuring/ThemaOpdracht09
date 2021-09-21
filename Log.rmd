@@ -50,8 +50,10 @@ CrabData
 #Give the 5 values of the dataset
 summary(CrabData)
 
+CrabData <- CrabData %>% mutate(sp = factor(sp, levels = c("B","O"), labels = c("Blue Leptograspus","Orange Leptograspus")))
+
 #Create a plot of both species
-ggplot(CrabData, aes(y = RW, x = BD, color=sex, shape = sp)) +
+ggplot(CrabData, aes(y = RW, x = BD, color=sp)) +
   geom_point() +
   scale_x_continuous() +
   geom_jitter() +
@@ -93,7 +95,7 @@ ggplot(CrabData, aes(y = RW, x = BD, color=sex, shape = sp)) +
   geom_point() +
   scale_x_continuous() +
   geom_jitter() +
-  geom_smooth() +
+  geom_smooth(method = " loess") +
   scale_color_manual(values=c("Blue","Orange"))
 
 #Create a plot of only the blue species 
@@ -121,9 +123,12 @@ the blue-form species has a greater relative carapace width than has the orange 
 ```{r}
 #Create a plot showing the carapace width against the frontal lobe size of the two species
 ggplot(CrabData, aes(y=CW, x=FL, col=sp)) +
-  geom_point() +
+  geom_point(alpha=0.5) +
   geom_jitter() +
-  scale_colour_manual(values = c("Blue","Orange"))
+  scale_colour_manual(values = c("Blue","Orange")) +
+  xlab("Frontal Lobe Size (mm)") +
+  ylab("Crapace Width (mm)") +
+  geom_smooth(method="loess", formula = y ~ x)
 
 ```
 The second canonical variate, which presents a contrast between the rear width and the carapace
@@ -142,6 +147,12 @@ The clear separation of the blue and orange forms achieved by canonical analysis
 previously determined specific status of the two forms. 
 
 ```{r}
-str(CrabData)
-
+codebook <- read.csv(file = "data/codebook.csv")
+knitr::kable(codebook)
 ```
+
+Day 3 
+
+Onderzoeksvraag bedenken
+
+Is it possible to create an algorithm which, when given the Frontal Lobe Size and Carapace Width of a purple rock crab, determine whether or not it belongs to the blue or orange species?

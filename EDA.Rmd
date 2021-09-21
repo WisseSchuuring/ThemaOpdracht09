@@ -1,0 +1,107 @@
+---
+title: "Exploratory Data Analysis"
+author: "Wisse Schuuring"
+date: "9/21/2021"
+output: pdf_document
+---
+
+
+```{r}
+#Read in the libraries
+library(ggplot2)
+library(dplyr)
+library(xtable)
+
+#Read in the dataset
+CrabData <- read.csv(file = 'data/CrabData.csv')
+CrabData <- CrabData %>% mutate(sp = factor(sp, levels = c("B","O"), labels = c("Blue Leptograspus","Orange Leptograspus")))
+CrabData <- CrabData %>% mutate(sex = factor(sex))
+CrabData 
+
+```
+```{r}
+codebook <- read.csv(file = "data/codebook.csv")
+knitr::kable(codebook) 
+```
+
+A variable is a quantity, quality, or property that you can measure.
+
+A value is the state of a variable when you measure it. The value of a variable may change from measurement to measurement.
+
+An observation is a set of measurements made under similar conditions (you usually make all of the measurements in an observation at the same time and on the same object). An observation will contain several values, each associated with a different variable. I’ll sometimes refer to an observation as a data point.
+
+Tabular data is a set of values, each associated with a variable and an observation. Tabular data is tidy if each value is placed in its own “cell”, each variable in its own column, and each observation in its own row.
+
+What type of variation occurs within my variables?
+
+```{r}
+
+#Filter the datasets on their species
+CrabDataB <- filter(CrabData, sp == "Blue Leptograspus")
+CrabDataO <- filter(CrabData, sp == "Orange Leptograspus")
+
+```
+
+
+
+```{r}
+#Give the 5 values of the dataset
+summary(CrabData)
+```
+
+
+
+shows that there is complete separation of the blue and orange forms along
+the first canonical axis. Thus all animals, including the randomly excluded animals,
+were discriminated perfectly for colour form.
+
+```{r}
+
+#Create a plot of both species comparing the CW to the FL in order to determine the species
+ggplot(CrabData, aes(y = CW, x = FL, color=sp)) +
+  geom_point() +
+  scale_x_continuous() +
+  geom_jitter() +
+  scale_color_manual(values=c("Blue","Orange")) +
+  xlab("Frontal Lobe Size (mm)") +
+  ylab("Carapace Width (mm)") +
+  ggtitle("Carapace Width vs Frontal Lobe Size of the Purple Rock Crab")+
+  labs(col="Species of Crab")
+```
+
+The second canonical variate largely discriminated on the basis of the sex of the
+crabs; thus variates contributing to this are probably sex-linked. Nineteen of the 20
+excluded crabs were correctly identified for both colour form and sex (one blue male
+was identified as a blue female). 
+
+```{r}
+#Create a plot comparing the RW to the CL to determine the gender of the crab
+ggplot(CrabData, aes(y = RW, x = CL, color=sex)) +
+  geom_point() +
+  scale_x_continuous() +
+  geom_jitter() +
+  scale_color_manual(values=c("Pink","Light Blue")) +
+  xlab("Carapace Length (mm)") +
+  ylab("Rear Width (mm)") +
+  ggtitle("Carapace Length vs Rear Width of the Purple Rock Crab")+
+  labs(col="Gender of Crab")
+``` 
+ 
+ There was only minimal overlap on the second
+canonical axis for both the blue and the orange forms.
+ 
+
+```{r}
+
+  ggplot(CrabData, aes(y = CW, x = BD, color=sp)) +
+  geom_point() +
+  scale_x_continuous() +
+  geom_jitter() +
+  scale_color_manual(values=c("Blue","Orange")) +
+  xlab("Body Depth (mm)") +
+  ylab("Carapace Width (mm)") +
+  ggtitle("Carapace Width vs Body Depth of the Purple Rock Crab")+
+  labs(col="Species of Crab")
+```
+
+
