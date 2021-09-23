@@ -106,9 +106,17 @@ Although discriminating upon carapace width (CW) and body depth (BD) too can be 
 #                                 names_to = "property",
 #                                 values_to = "value")
 
-CrabData.pca <- prcomp(CrabTibble, center = TRUE, scale = TRUE)
+CrabData
 
-ggbiplot(CrabData.pca)
+CrabData.pca <- prcomp(CrabData[4:8], center = TRUE, scale. = TRUE)
+print(CrabData.pca)
+summary(CrabData.pca)
+plot(CrabData.pca, type="l")
+ggbiplot(CrabData.pca, obs.scale = 1, var.scale = 1, 
+              groups = CrabData[4:8], ellipse = FALSE, 
+              circle = TRUE) + 
+    scale_color_discrete(name = '') +
+    theme(legend.direction = 'horizontal', legend.position = 'top')
 ```
 
 
