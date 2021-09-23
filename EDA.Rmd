@@ -5,57 +5,46 @@ date: "9/21/2021"
 output: pdf_document
 ---
 
+## Data origin
 
-```{r}
+"Crab body metrics" is the title of the dataset sourced from "A Multivariate Study of Variation in Two Species of Rock Crab of the Genus Leptograpsus", an article published in 1974 by N. A. Campbell and R. J. Mahon. 
+
+## Data 
+
+This dataset contains 200 rows and 8 columns, describing 5 morphological measurements on 50 crabs. Each crab of two colour forms and both sexes, of the species Leptograpsus variegatus. These crabs were collected at Fremantle, West Australia. The data is complete, containing no missing values.
+
+```{r, echo=FALSE, message=FALSE}
 #Read in the libraries
 library(ggplot2)
 library(dplyr)
 library(xtable)
+library(ggbiplot)
 
 #Read in the dataset
 CrabData <- read.csv(file = 'data/CrabData.csv')
 CrabData <- CrabData %>% mutate(sp = factor(sp, levels = c("B","O"), labels = c("Blue Leptograspus","Orange Leptograspus")))
 CrabData <- CrabData %>% mutate(sex = factor(sex))
-CrabData 
 
-```
-```{r}
+#Read in the codebook and show it
 codebook <- read.csv(file = "data/codebook.csv")
 knitr::kable(codebook) 
 ```
 
-A variable is a quantity, quality, or property that you can measure.
 
-A value is the state of a variable when you measure it. The value of a variable may change from measurement to measurement.
+The crabs have been measured on their frontal lobe size (FL), rear width (RW), carapace length (CL), carapace width (CW) and body depth (BD) in mm. Furthermore their gender and colour have been recorded. 
 
-An observation is a set of measurements made under similar conditions (you usually make all of the measurements in an observation at the same time and on the same object). An observation will contain several values, each associated with a different variable. I’ll sometimes refer to an observation as a data point.
+## Visualisation
+```{r, echo=FALSE,  fig.width=8,fig.height=2.5}
+# Simple Pie Chart
 
-Tabular data is a set of values, each associated with a variable and an observation. Tabular data is tidy if each value is placed in its own “cell”, each variable in its own column, and each observation in its own row.
-
-What type of variation occurs within my variables?
-
-```{r}
-
-#Filter the datasets on their species
-CrabDataB <- filter(CrabData, sp == "Blue Leptograspus")
-CrabDataO <- filter(CrabData, sp == "Orange Leptograspus")
+pie(c(length(CrabData$sp == "Orange Leptograspus"), length(CrabData$sp == "Blue Leptograspus")), c("Orange Leptograspus", "Blue Leptograspus"), main="Distribution of data", col = c("Orange", "Blue"))
 
 ```
 
+There is an even distribution of records from both species of Leptograspus, with 50% Blue and 50% orange.
 
 
-```{r}
-#Give the 5 values of the dataset
-summary(CrabData)
-```
-
-
-
-shows that there is complete separation of the blue and orange forms along
-the first canonical axis. Thus all animals, including the randomly excluded animals,
-were discriminated perfectly for colour form.
-
-```{r}
+```{r, echo=FALSE, fig.width=6.5,fig.height=3}
 
 #Create a plot of both species comparing the CW to the FL in order to determine the species
 ggplot(CrabData, aes(y = CW, x = FL, color=sp)) +
@@ -69,12 +58,9 @@ ggplot(CrabData, aes(y = CW, x = FL, color=sp)) +
   labs(col="Species of Crab")
 ```
 
-The second canonical variate largely discriminated on the basis of the sex of the
-crabs; thus variates contributing to this are probably sex-linked. Nineteen of the 20
-excluded crabs were correctly identified for both colour form and sex (one blue male
-was identified as a blue female). 
+The most prominent separation between the blue and orange species can be visualized when discriminating upon the carapace width (CW) and the frontal lobe size (FL). These are the optimal variables with which one could classify the species of Leptograpsus.
 
-```{r}
+```{r, echo=FALSE, fig.width=6,fig.height=3}
 #Create a plot comparing the RW to the CL to determine the gender of the crab
 ggplot(CrabData, aes(y = RW, x = CL, color=sex)) +
   geom_point() +
@@ -86,14 +72,12 @@ ggplot(CrabData, aes(y = RW, x = CL, color=sex)) +
   ggtitle("Carapace Length vs Rear Width of the Purple Rock Crab")+
   labs(col="Gender of Crab")
 ``` 
- 
- There was only minimal overlap on the second
-canonical axis for both the blue and the orange forms.
- 
 
-```{r}
+Discriminating upon carapace length (CL) and rear width (RW) shows the gender difference and can be used to identify individuals of either crab species' gender.
 
-  ggplot(CrabData, aes(y = CW, x = BD, color=sp)) +
+```{r, echo=FALSE, fig.width=6.5,fig.height=3}
+#Create a plot comparing the CW to the BD to determine the species of the crab
+ggplot(CrabData, aes(y = CW, x = BD, color=sp)) +
   geom_point() +
   scale_x_continuous() +
   geom_jitter() +
@@ -104,4 +88,49 @@ canonical axis for both the blue and the orange forms.
   labs(col="Species of Crab")
 ```
 
+Although discriminating upon carapace width (CW) and body depth (BD) too can be used to determine the species of the Purple rock crab, it is less reliant and separate than discriminating on carapace width (CW) and the frontal lobe size (FL).
 
+```{r, echo=FALSE, fig.width=6.5,fig.height=3}
+# CrabMeans <- kmeans(na.omit(CrabData[c(4,7)]),2)
+# CrabMeans
+# library(cluster)
+
+# PCAplot(CrabData, CrabMeans$cluster, color=TRUE, shade=TRUE)
+# dd <- dist(scale(USArrests), method = "euclidean")
+# hc <- hclust(dd, method = "ward.D2")
+
+# CrabTibble <- tibble(CrabData[,c(1,4,7)])
+# 
+# CrabTibble_long <- pivot_longer(data = CrabTibble,
+#                                 cols = c(A.B),
+#                                 names_to = "property",
+#                                 values_to = "value")
+
+CrabData.pca <- prcomp(CrabTibble, center = TRUE, scale = TRUE)
+
+ggbiplot(CrabData.pca)
+```
+
+
+
+```{r, echo=FALSE,  fig.width=6.5,fig.height=3}
+#Create a plot of both species comparing the CW to the FL in order to determine the species
+ggplot(CrabData, aes(y = CW, x = FL, color=sp)) +
+  geom_point() +
+  scale_x_continuous() +
+  geom_jitter() +
+  scale_color_manual(values=c("Blue","Orange")) +
+  xlab("Frontal Lobe Size (mm)") +
+  ylab("Carapace Width (mm)") +
+  ggtitle("Carapace Width vs Frontal Lobe Size of the Purple Rock Crab")+
+  ggforce::geom_mark_ellipse(
+    aes(filter = sp == "Orange Leptograspus"),
+    size = 0.5
+  ) +
+  ggforce::geom_mark_ellipse(
+    aes(filter = sp == "Blue Leptograspus"),
+    size = 0.5
+  ) +
+  labs(col="Species of Crab")
+```
+```
