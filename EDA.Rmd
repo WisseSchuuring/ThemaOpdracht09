@@ -1,7 +1,7 @@
 ---
 title: "Exploratory Data Analysis"
 author: "Wisse Schuuring"
-date: "9/21/2021"
+date: "9/27/2021"
 output: pdf_document
 ---
 
@@ -14,6 +14,7 @@ output: pdf_document
 This dataset contains 200 rows and 8 columns, describing 5 morphological measurements on 50 crabs. Each crab of two colour forms and both sexes, of the species Leptograpsus variegatus. These crabs were collected at Fremantle, West Australia. The data is complete, containing no missing values.
 
 ```{r, echo=FALSE, message=FALSE}
+
 #Read in the libraries
 library(ggplot2)
 library(dplyr)
@@ -35,9 +36,9 @@ The crabs have been measured on their frontal lobe size (FL), rear width (RW), c
 
 ## Visualisation
 ```{r, echo=FALSE,  fig.width=8,fig.height=2.5}
-# Simple Pie Chart
 
-pie(c(length(CrabData$sp == "Orange Leptograspus"), length(CrabData$sp == "Blue Leptograspus")), c("Orange Leptograspus", "Blue Leptograspus"), main="Distribution of data", col = c("Orange", "Blue"))
+# Simple Pie Chart
+pie(c(length(CrabData$sp == "Orange Leptograspus"), length(CrabData$sp == "Blue Leptograspus")), c("Orange Leptograspus", "Blue Leptograspus"), main="Distribution of the Crab body metrics", col = c("Orange", "Blue"))
 
 ```
 
@@ -61,6 +62,7 @@ ggplot(CrabData, aes(y = CW, x = FL, color=sp)) +
 The most prominent separation between the blue and orange species can be visualized when discriminating upon the carapace width (CW) and the frontal lobe size (FL). These are the optimal variables with which one could classify the species of Leptograpsus.
 
 ```{r, echo=FALSE, fig.width=6,fig.height=3}
+
 #Create a plot comparing the RW to the CL to determine the gender of the crab
 ggplot(CrabData, aes(y = RW, x = CL, color=sex)) +
   geom_point() +
@@ -76,6 +78,7 @@ ggplot(CrabData, aes(y = RW, x = CL, color=sex)) +
 Discriminating upon carapace length (CL) and rear width (RW) shows the gender difference and can be used to identify individuals of either crab species' gender.
 
 ```{r, echo=FALSE, fig.width=6.5,fig.height=3}
+
 #Create a plot comparing the CW to the BD to determine the species of the crab
 ggplot(CrabData, aes(y = CW, x = BD, color=sp)) +
   geom_point() +
@@ -91,34 +94,13 @@ ggplot(CrabData, aes(y = CW, x = BD, color=sp)) +
 Although discriminating upon carapace width (CW) and body depth (BD) too can be used to determine the species of the Purple rock crab, it is less reliant and separate than discriminating on carapace width (CW) and the frontal lobe size (FL).
 
 ```{r, echo=FALSE, fig.width=6.5,fig.height=3}
-# CrabMeans <- kmeans(na.omit(CrabData[c(4,7)]),2)
-# CrabMeans
-# library(cluster)
 
-# PCAplot(CrabData, CrabMeans$cluster, color=TRUE, shade=TRUE)
-# dd <- dist(scale(USArrests), method = "euclidean")
-# hc <- hclust(dd, method = "ward.D2")
-
-# CrabTibble <- tibble(CrabData[,c(1,4,7)])
-# 
-# CrabTibble_long <- pivot_longer(data = CrabTibble,
-#                                 cols = c(A.B),
-#                                 names_to = "property",
-#                                 values_to = "value")
-
-CrabData
-
+#Create a PCA of the Crabdata and visualise it in a ggbiplot
 CrabData.pca <- prcomp(CrabData[4:8], center = TRUE, scale. = TRUE)
-print(CrabData.pca)
-summary(CrabData.pca)
-plot(CrabData.pca, type="l")
-ggbiplot(CrabData.pca, obs.scale = 1, var.scale = 1, 
-              groups = CrabData[4:8], ellipse = FALSE, 
-              circle = TRUE) + 
-    scale_color_discrete(name = '') +
-    theme(legend.direction = 'horizontal', legend.position = 'top')
+ggbiplot(CrabData.pca, main = "Principal component analysis of the Crab body metrics")
 ```
 
+As seen in the PCA, all variables have about the same impact upon the dotplot, with the exception of Rear Width, which makes the RW value the one with the most information gain.
 
 
 ```{r, echo=FALSE,  fig.width=6.5,fig.height=3}
@@ -141,4 +123,5 @@ ggplot(CrabData, aes(y = CW, x = FL, color=sp)) +
   ) +
   labs(col="Species of Crab")
 ```
-```
+
+With a stricter formula, one could easily identify any new Crab measurements and identify them by species through clustering. 
