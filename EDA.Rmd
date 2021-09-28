@@ -13,7 +13,7 @@ output: pdf_document
 
 This dataset contains 200 rows and 8 columns, describing 5 morphological measurements on 50 crabs. Each crab of two colour forms and both sexes, of the species Leptograpsus variegatus. These crabs were collected at Fremantle, West Australia. The data is complete, containing no missing values.
 
-```{r, echo=FALSE, message=FALSE}
+```{r, message=FALSE}
 
 #Read in the libraries
 library(ggplot2)
@@ -35,7 +35,7 @@ knitr::kable(codebook)
 The crabs have been measured on their frontal lobe size (FL), rear width (RW), carapace length (CL), carapace width (CW) and body depth (BD) in mm. Furthermore their gender and colour have been recorded. 
 
 ## Visualisation
-```{r, echo=FALSE,  fig.width=8,fig.height=2.5}
+```{r,  fig.width=8,fig.height=2.5}
 
 # Simple Pie Chart
 pie(c(length(CrabData$sp == "Orange Leptograspus"), length(CrabData$sp == "Blue Leptograspus")), c("Orange Leptograspus", "Blue Leptograspus"), main="Distribution of the Crab body metrics", col = c("Orange", "Blue"))
@@ -45,7 +45,7 @@ pie(c(length(CrabData$sp == "Orange Leptograspus"), length(CrabData$sp == "Blue 
 There is an even distribution of records from both species of Leptograspus, with 50% Blue and 50% orange.
 
 
-```{r, echo=FALSE, fig.width=6.5,fig.height=3}
+```{r, fig.width=6.5,fig.height=3}
 
 #Create a plot of both species comparing the CW to the FL in order to determine the species
 ggplot(CrabData, aes(y = CW, x = FL, color=sp)) +
@@ -61,7 +61,7 @@ ggplot(CrabData, aes(y = CW, x = FL, color=sp)) +
 
 The most prominent separation between the blue and orange species can be visualized when discriminating upon the carapace width (CW) and the frontal lobe size (FL). These are the optimal variables with which one could classify the species of Leptograpsus.
 
-```{r, echo=FALSE, fig.width=6,fig.height=3}
+```{r, fig.width=6,fig.height=3}
 
 #Create a plot comparing the RW to the CL to determine the gender of the crab
 ggplot(CrabData, aes(y = RW, x = CL, color=sex)) +
@@ -77,7 +77,7 @@ ggplot(CrabData, aes(y = RW, x = CL, color=sex)) +
 
 Discriminating upon carapace length (CL) and rear width (RW) shows the gender difference and can be used to identify individuals of either crab species' gender.
 
-```{r, echo=FALSE, fig.width=6.5,fig.height=3}
+```{r, fig.width=6.5,fig.height=3}
 
 #Create a plot comparing the CW to the BD to determine the species of the crab
 ggplot(CrabData, aes(y = CW, x = BD, color=sp)) +
@@ -93,7 +93,7 @@ ggplot(CrabData, aes(y = CW, x = BD, color=sp)) +
 
 Although discriminating upon carapace width (CW) and body depth (BD) too can be used to determine the species of the Purple rock crab, it is less reliant and separate than discriminating on carapace width (CW) and the frontal lobe size (FL).
 
-```{r, echo=FALSE, fig.width=6.5,fig.height=3}
+```{r, fig.width=6.5,fig.height=3}
 
 #Create a PCA of the Crabdata and visualise it in a ggbiplot
 CrabData.pca <- prcomp(CrabData[4:8], center = TRUE, scale. = TRUE)
@@ -103,7 +103,7 @@ ggbiplot(CrabData.pca, main = "Principal component analysis of the Crab body met
 As seen in the PCA, all variables have about the same impact upon the dotplot, with the exception of Rear Width, which makes the RW value the one with the most information gain.
 
 
-```{r, echo=FALSE,  fig.width=6.5,fig.height=3}
+```{r,  fig.width=6.5,fig.height=3}
 #Create a plot of both species comparing the CW to the FL in order to determine the species
 ggplot(CrabData, aes(y = CW, x = FL, color=sp)) +
   geom_point() +
@@ -125,3 +125,19 @@ ggplot(CrabData, aes(y = CW, x = FL, color=sp)) +
 ```
 
 With a stricter formula, one could easily identify any new Crab measurements and identify them by species through clustering. 
+
+```{r}
+#clean up the data by removing unused data
+CleanData <- CrabData[c(1,2,4,7)]
+
+#Create a plot of the clean data
+ggplot(CleanData, aes(y = CW, x = FL, color=sp)) +
+  geom_point() +
+  scale_x_continuous() +
+  geom_jitter() +
+  scale_color_manual(values=c("Blue","Orange")) +
+  xlab("Frontal Lobe Size (mm)") +
+  ylab("Carapace Width (mm)") +
+  ggtitle("Carapace Width vs Frontal Lobe Size of the Purple Rock Crab")+
+  labs(col="Species of Crab")
+```
