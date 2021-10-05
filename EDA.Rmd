@@ -53,7 +53,7 @@ Out of the 200 rows, 0 of them contain missing values. The data is complete, con
 ## Visualisation
 ```{r,  fig.width=8,fig.height=2.5, fig.cap="A pie chart showing the distribution of data from the blue and the orange species in the Crab Body Metrics dataset."}
 
-# Simple Pie Chart
+# Create a simple Pie Chart showing the distribution of data
 pie(c(length(CrabData$sp == "Orange Leptograspus"),
       length(CrabData$sp == "Blue Leptograspus")),
     c("Orange Leptograspus", "Blue Leptograspus"),
@@ -67,7 +67,7 @@ There is an even distribution of records from both species of Leptograspus, with
 
 ```{r, fig.width=6.5,fig.height=3, fig.cap="A dotplot showing the different carapace width and frontal lobe size between the blue and orange purple rock crab species."}
 
-#Create a plot of both species comparing the CW to the FL in order to determine the species
+#Create a plot comparing the CW to the FL in order to determine the species
 ggplot(CrabData, aes(y = CW, x = FL, color=sp)) +
   geom_point() +
   scale_x_continuous() +
@@ -117,14 +117,15 @@ Although discriminating upon carapace width (CW) and body depth (BD) too can be 
 
 #Create a PCA of the Crabdata and visualise it in a ggbiplot
 CrabData.pca <- prcomp(CrabData[4:8], center = TRUE, scale. = TRUE)
-ggbiplot(CrabData.pca, main = "Principal component analysis of the Crab body metrics")
+ggbiplot(CrabData.pca,
+         main="Principal component analysis of the Crab body metrics")
 ```
 
 As seen in the PCA, all variables have about the same impact upon the dotplot, with the exception of Rear Width, which makes the RW value the one with the most information gain.
 
 
 ```{r, fig.width=6.5,fig.height=3, fig.cap="A dotplot showing the different carapace width and frontal lobe size between the blue and orange purple rock crab species with an added cluster."}
-#Create a plot of both species comparing the CW to the FL in order to determine the species
+# Create a plot of both species comparing the CW to FL to determine the species
 ggplot(CrabData, aes(y = CW, x = FL, color=sp)) +
   geom_point() +
   scale_x_continuous() +
@@ -159,20 +160,20 @@ By removing unneeded and unused data, the dataset will be cleaner and more readi
 Opening and reading the dataset 'Crab Body Metrics' shows it containing the values frontal lobe size (FL), rear width (RW), carapace length (CL), carapace width (CW) and body depth (BD) in mm, as well as the crabs' gender and species. The dataset contained numeric values that were changed to doubles. Visualising the dataset and plotting out the values suggested in the article by N.A. Campbell and R.J. Mahon ^[2] against one another, the first being Carapace Width against Frontal Lobe Size, discriminated by species. Secondly Carapace Length against Rear Width, discriminated by gender. Lastly Carapace Width against Body Depth, again discriminated by species. Comparing the first and last, in order to determine which values to use for the algorithm, one concludes that the first is the most suitable, for the distance between the two lines drawn is most distinct when setting the frontal lobe size against the carapace width.
 
 ```{r, fig.width=6.5,fig.height=3, fig.cap="A dotplot showing the different seperation distances between the blue and orange purple rock crab species. The dashed line representing the Body depth, and the neutral representing Frontal Lobe Size."}
-# Create a plot comparing the two different values for x, being Body Depth and Frontal Lobe Size
+# Create a plot comparing two values for x, Body Depth and Frontal Lobe Size
 ggplot(data = CrabData,  
 mapping = aes( 
 x = FL,  
 y = CW,  
 color = sp)) + 
    geom_smooth(method = "lm", se = FALSE) +
-   scale_color_manual(values=c("Blue","Orange")) +
+  scale_color_manual(values=c("Blue","Orange")) +
    labs( 
 x = "",  
 y = "Carapace Width (mm)",  
 colour = "Crab Species",
 title = "Body Depth vs Frontal Lobe Size against Carapace Width") +
-  stat_smooth(data=CrabData,
+  geom_smooth(data=CrabData,
               aes(x=BD, y=CW),
               method = "lm",
               se = FALSE,
@@ -205,7 +206,7 @@ The Data set itself is free of missing values, and contains all but two numeric 
 
 ## Conclusion
 
-By removing all unnecessary records, the data set itself has been optimally data mined and prepared for the machine learning process. However, the data set could have been ameliorated by obtaining more examples from the Australian coastline or by more precise measurements. 
+By removing all unnecessary records, the data set itself has been optimally data mined and prepared for the machine learning process. However, the data set could have been ameliorated by obtaining more examples of the frontal lobe and carapce width of the purple rock crab, or by more precise measurements containing decimals. 
 
 ## References
 
