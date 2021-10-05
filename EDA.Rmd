@@ -15,7 +15,7 @@ This EDA explores the "Crab body metrics" dataset in order to utilize it for dat
 
 ## Data 
 
-This dataset contains 200 rows and 8 columns, describing 5 morphological measurements on 50 crabs. Each crab of two colour forms and both sexes, of the species Leptograpsus variegatus. These crabs were collected at Fremantle, West Australia.
+This dataset contains 200 rows and 8 columns, describing 5 morphological measurements on 200 crabs, 50 male and 50 female for both species respectively. Each crab of two colour forms and both sexes, of the species Leptograpsus variegatus. These crabs were collected at Fremantle, West Australia.
 
 ```{r, message=FALSE}
 
@@ -180,7 +180,7 @@ title = "Body Depth vs Frontal Lobe Size against Carapace Width") +
 ```
 
 
-The resulting graph, discriminated by the third value of the species themselves, shows two distinct lines. With this it can be concluded that the Blue Leptograspus are overall wider than the Orange Leptograspus, and thus this data can be used for machine learning purposes and creating the algorithm. 
+The resulting graph, discriminated by the third value of the species themselves, shows two distinct lines. With this it can be concluded that the Blue Leptograspus are overall wider than the Orange Leptograspus, and thus this data can be used for machine learning purposes and creating the algorithm that when fed the proper measurements, can determine wether the given crab's data belongs to the Blue Leptograspus or the Orange Leptograspus. 
 
 ```{r}
 # Create a plot using the cleaned up data
@@ -201,7 +201,11 @@ title = "Carapace Width vs Frontal Lobe Size of the Purple Rock Crab")
 
 ## Discussion
 
+The Data set itself is free of missing values, and contains all but two numeric values. furthermore the data itself contains no duplicated values nor any corrupted data. the downside is that there are merely 200 sampled organisms. While the distribution is perfect, being 50/50 on both species and gender, a bigger population would have been desirable for the machine learning.
+
 ## Conclusion
+
+By removing all unnecessary records, the data set itself has been optimally data mined and prepared for the machine learning process. However, the data set could have been ameliorated by obtaining more examples from the Australian coastline or by more precise measurements. 
 
 ## References
 
