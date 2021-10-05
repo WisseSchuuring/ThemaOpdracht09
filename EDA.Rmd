@@ -123,7 +123,7 @@ ggbiplot(CrabData.pca, main = "Principal component analysis of the Crab body met
 As seen in the PCA, all variables have about the same impact upon the dotplot, with the exception of Rear Width, which makes the RW value the one with the most information gain.
 
 
-```{r,  fig.width=6.5,fig.height=3, fig.cap="A dotplot showing the different carapace width and frontal lobe size between the blue and orange purple rock crab species with an added cluster."}
+```{r, fig.width=6.5,fig.height=3, fig.cap="A dotplot showing the different carapace width and frontal lobe size between the blue and orange purple rock crab species with an added cluster."}
 #Create a plot of both species comparing the CW to the FL in order to determine the species
 ggplot(CrabData, aes(y = CW, x = FL, color=sp)) +
   geom_point() +
@@ -146,23 +146,64 @@ ggplot(CrabData, aes(y = CW, x = FL, color=sp)) +
 
 With a stricter formula, one could easily identify any new Crab measurements and identify them by species through clustering. 
 
-```{r,  fig.cap="A dotplot showing the different carapace width and frontal lobe size between the blue and orange purple rock crab species."}
+```{r}
 #clean up the data by removing unused data
 CleanData <- CrabData[c(1,2,4,7)]
+str(CleanData)
+```
 
-#Create a plot of the clean data
-ggplot(CleanData, aes(y = CW, x = FL, color=sp)) +
-  geom_point() +
-  scale_x_continuous() +
-  geom_jitter() +
-  scale_color_manual(values=c("Blue","Orange")) +
-  xlab("Frontal Lobe Size (mm)") +
-  ylab("Carapace Width (mm)") +
-  ggtitle("Carapace Width vs Frontal Lobe Size of the Purple Rock Crab")+
-  labs(col="Species of Crab")
+By removing unneeded and unused data, the dataset will be cleaner and more readily usable for the algorithm that will utilize it.
+
+## Results
+
+Opening and reading the dataset 'Crab Body Metrics' shows it containing the values frontal lobe size (FL), rear width (RW), carapace length (CL), carapace width (CW) and body depth (BD) in mm, as well as the crabs' gender and species. The dataset contained numeric values that were changed to doubles. Visualising the dataset and plotting out the values suggested in the article by N.A. Campbell and R.J. Mahon ^[2] against one another, the first being Carapace Width against Frontal Lobe Size, discriminated by species. Secondly Carapace Length against Rear Width, discriminated by gender. Lastly Carapace Width against Body Depth, again discriminated by species. Comparing the first and last, in order to determine which values to use for the algorithm, one concludes that the first is the most suitable, for the distance between the two lines drawn is most distinct when setting the frontal lobe size against the carapace width.
+
+```{r, fig.width=6.5,fig.height=3, fig.cap="A dotplot showing the different seperation distances between the blue and orange purple rock crab species. The dashed line representing the Body depth, and the neutral representing Frontal Lobe Size."}
+# Create a plot comparing the two different values for x, being Body Depth and Frontal Lobe Size
+ggplot(data = CrabData,  
+mapping = aes( 
+x = FL,  
+y = CW,  
+color = sp)) + 
+   geom_smooth(method = "lm", se = FALSE) +
+   scale_color_manual(values=c("Blue","Orange")) +
+   labs( 
+x = "",  
+y = "Carapace Width (mm)",  
+colour = "Crab Species",
+title = "Body Depth vs Frontal Lobe Size against Carapace Width") +
+  stat_smooth(data=CrabData,
+              aes(x=BD, y=CW),
+              method = "lm",
+              se = FALSE,
+              linetype="dashed")
 ```
 
 
+The resulting graph, discriminated by the third value of the species themselves, shows two distinct lines. With this it can be concluded that the Blue Leptograspus are overall wider than the Orange Leptograspus, and thus this data can be used for machine learning purposes and creating the algorithm. 
+
+```{r}
+# Create a plot using the cleaned up data
+ggplot(data = CleanData,  
+mapping = aes( 
+x = FL,  
+y = CW,  
+color = sp)) + 
+   geom_jitter(alpha = 0.5) +  
+   geom_smooth(method = "lm", se = FALSE) +
+   scale_color_manual(values=c("Blue","Orange")) +
+   labs( 
+x = "Frontal Lobe Size (mm)",  
+y = "Carapace Width (mm)",  
+colour = "Crab Species",
+title = "Carapace Width vs Frontal Lobe Size of the Purple Rock Crab")
+```
+
+## Discussion
+
+## Conclusion
+
 ## References
 
-N.A. Campbell and R.J. Mahon (1974),'A Multivariate Study of Variation in Two Species of Rock Crab of the Genus Leptograpsus', Awt. J. Zool (p.418).
+[1] N.A. Campbell and R.J. Mahon (1974),'A Multivariate Study of Variation in Two Species of Rock Crab of the Genus Leptograpsus', Awt. J. Zool (p.418).
+[2] N.A. Campbell and R.J. Mahon (1974),'A Multivariate Study of Variation in Two Species of Rock Crab of the Genus Leptograpsus', Awt. J. Zool (p.424).
