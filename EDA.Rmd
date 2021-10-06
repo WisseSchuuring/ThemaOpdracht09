@@ -19,13 +19,11 @@ This dataset contains 200 rows and 8 columns, describing 5 morphological measure
 
 ```{r, message=FALSE}
 
-#Read in the libraries
 library(ggplot2)
 library(dplyr)
 library(xtable)
 library(ggbiplot)
 
-#Read in the dataset
 CrabData <- read.csv(file = 'data/CrabData.csv')
 
 CrabData <- CrabData %>% mutate(
@@ -35,7 +33,6 @@ CrabData <- CrabData %>% mutate(
   sex = factor(sex)
   )
 
-#Read in the codebook and show it
 codebook <- read.csv(file = "data/codebook.csv")
 knitr::kable(codebook) 
 ```
@@ -166,7 +163,7 @@ mapping = aes(
 x = FL,  
 y = CW,  
 color = sp)) + 
-   geom_smooth(method = "lm", se = FALSE) +
+   geom_smooth(method = "lm", se = FALSE, formula="y~x") +
   scale_color_manual(values=c("Blue","Orange")) +
    labs( 
 x = "",  
@@ -177,7 +174,8 @@ title = "Body Depth vs Frontal Lobe Size against Carapace Width") +
               aes(x=BD, y=CW),
               method = "lm",
               se = FALSE,
-              linetype="dashed")
+              linetype="dashed",
+              formula="y~x")
 ```
 
 
@@ -191,7 +189,7 @@ x = FL,
 y = CW,  
 color = sp)) + 
    geom_jitter(alpha = 0.5) +  
-   geom_smooth(method = "lm", se = FALSE) +
+   geom_smooth(method = "lm", se = FALSE, formula="y~x") +
    scale_color_manual(values=c("Blue","Orange")) +
    labs( 
 x = "Frontal Lobe Size (mm)",  
@@ -212,3 +210,12 @@ By removing all unnecessary records, the data set itself has been optimally data
 
 [1] N.A. Campbell and R.J. Mahon (1974),'A Multivariate Study of Variation in Two Species of Rock Crab of the Genus Leptograpsus', Awt. J. Zool (p.418).
 [2] N.A. Campbell and R.J. Mahon (1974),'A Multivariate Study of Variation in Two Species of Rock Crab of the Genus Leptograpsus', Awt. J. Zool (p.424).
+
+## Determine quality metrics relevant for your research
+
+```{r}
+write.csv(CleanData, file = "data/CleanData.csv")
+```
+
+Using this newly created CleanData.csv file in Weka 3.8, by first removing the identifier attribute by selecting it and pressing 'remove', one can move over to the classify window. There, first running a ZeroR with the training set test option selected will reveal the accuracy of the algorithm to be 50%. this makes sense, as there is an even distribution of both blue and orange purple rock crabs in the dataset. with ZeroR, the algorithm will only look at a single attribute and take it as truth. Simply put, the system will assume every identified attribute shall be the one that is most prominent. This dataset containing 100 blue and 100 orange purple rock crabs, it picks one, and assumes all others are the same as the one it picked. Therefore, a 50% accuracy is expected, as 100/200 * 100 = 50%.
+
