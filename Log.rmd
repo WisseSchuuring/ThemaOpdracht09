@@ -184,8 +184,14 @@ Started to investigate the performance of different machine learning algorithms.
 
 ```{r, fig.cap="A table showing the speed and accuracy of the classification method, along with the confusion matrix"}
 OldWekaResults <- read.csv(file = "data/OldWekaResults.csv")
-knitr::kable(OldWekaResults) 
+knitr::kable(OldWekaResults)
 ```
 
-these results showed that Simple Logistic works almost perfectly. Upon suggestion I have made a change to the cleaned data file, removing the unneccesairy gender value and opting for body depth instead, for it has a larger impact on deciding wether a creature belongs to one species or the other.
+these results showed that Simple Logistic works almost perfectly. Upon suggestion I have made a change to the cleaned data file, removing the unnecessary gender value and opting for body depth instead, for it has a larger impact on deciding whether a creature belongs to one species or the other. 
 
+```{r, fig.cap="A table showing the speed and accuracy of the classification method, along with the confusion matrix"}
+WekaResults <- read.csv(file = "data/WekaResults.csv")
+knitr::kable(WekaResults) 
+```
+
+This results in an accuracy of 100%, perfection.

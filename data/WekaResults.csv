@@ -1,4 +1,4 @@
-"classification","speed","accuracy","TP","FP","TN","FN"
+"classification","sec","percent","TP","FP","TN","FN"
 "ZeroR",0,50,100,0,0,100
 "OneR",0,69,75,25,63,37
 "Naive Bayes",0,63,66,34,60,40

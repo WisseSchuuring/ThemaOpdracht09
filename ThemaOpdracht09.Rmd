@@ -230,6 +230,6 @@ WekaResults <- read.csv(file = "data/WekaResults.csv")
 knitr::kable(WekaResults) 
 ```
 
-Upon testing, it is clear that the Simple Logistic classification method is the most suitable to identify the crab species. 
+Upon testing, it is clear that the Simple Logistic classification method is the most suitable to identify the crab species and thus for creating the algorithm. 
 
 
