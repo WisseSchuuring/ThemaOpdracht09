@@ -1,0 +1,9 @@
+"classification","speed","accuracy","TP","FP","TN","FN"
+"ZeroR",0,50,100,0,0,100
+"OneR",0,67.5,75,25,60,40
+"Naive Bayes",0,63.5,64,36,63,37
+"Simple Logistic",0.1,99,100,0,98,2
+"SVM(SMO)",0.02,74,82,18,66,34
+"Nearest Neigbor(IBk)",0,95,95,5,95,5
+"J48",0,91,94,6,88,12
+"Random Forest",0.06,93.5,95,5,92,8

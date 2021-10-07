@@ -227,8 +227,14 @@ Utilising the tree classifier J48, firstly an unpruned tree was created with the
 
 Utilising J48 with the same discriminator, unpruned set to False and test option set to 'training set' results in an accuracy of 96.5%, with 99 True positives, 1 False positive, 94 True negatives and 6 False negatives. setting the unpruned to True results in the exact same tree.
 
-Now changing the test option to 'cross-validation' with a fold value of 10, gives an accuracy of 88%. While worse, it is still surprisingly accurate. after changing the seed to 2, it gives an accuracy of 90.5%. 
+Now changing the test option to 'cross-validation' with a fold value of 10, gives an accuracy of 88%. While worse, it is still surprisingly accurate. after changing the seed to 2, it gives an accuracy of 91%, containing 94 TP, 6 FP, 88 TN and 12 FN.
 
 
+In order to determine the best classification method for the 'Crab Body Metrics', The following methods were used on the data set with test option 'cross-validation', having a fold value of 10. Speed, accuracy, True positives, False positives, True negatives and False negatives were all recorded within a csv file. The results of which are shown below.
+
+```{r, fig.cap="A table showing the speed and accuracy of the classification method, along with the confusion matrix"}
+WekaResults <- read.csv(file = "data/WekaResults.csv")
+knitr::kable(WekaResults) 
+```
 
 
