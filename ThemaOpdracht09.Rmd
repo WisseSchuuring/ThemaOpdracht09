@@ -2,7 +2,9 @@
 title: "Exploratory Data Analysis"
 author: "Wisse Schuuring"
 date: "9/27/2021"
-output: pdf_document
+output:
+  pdf_document: default
+  word_document: default
 ---
 
 ## Introduction
@@ -146,7 +148,7 @@ With a stricter formula, one could easily identify any new Crab measurements and
 
 ```{r}
 #clean up the data by removing unused data
-CleanData <- CrabData[c(1,2,4,7)]
+CleanData <- CrabData[c(1,4,7,8)]
 str(CleanData)
 ```
 
@@ -154,7 +156,7 @@ By removing unneeded and unused data, the dataset will be cleaner and more readi
 
 ## Results
 
-Opening and reading the dataset 'Crab Body Metrics' shows it containing the values frontal lobe size (FL), rear width (RW), carapace length (CL), carapace width (CW) and body depth (BD) in mm, as well as the crabs' gender and species. The dataset contained numeric values that were changed to doubles. Visualising the dataset and plotting out the values suggested in the article by N.A. Campbell and R.J. Mahon ^[2] against one another, the first being Carapace Width against Frontal Lobe Size, discriminated by species. Secondly Carapace Length against Rear Width, discriminated by gender. Lastly Carapace Width against Body Depth, again discriminated by species. Comparing the first and last, in order to determine which values to use for the algorithm, one concludes that the first is the most suitable, for the distance between the two lines drawn is most distinct when setting the frontal lobe size against the carapace width.
+Opening and reading the dataset 'Crab Body Metrics' shows it containing the values frontal lobe size (FL), rear width (RW), carapace length (CL), carapace width (CW) and body depth (BD) in mm, as well as the crabs' gender and species. The dataset contained numeric values that were changed to doubles. Visualising the dataset and plotting out the values suggested in the article by N.A. Campbell and R.J. Mahon ^[2] against one another, the first being Carapace Width against Frontal Lobe Size, discriminated by species. Secondly Carapace Length against Rear Width, discriminated by gender. Lastly Carapace Width against Body Depth, again discriminated by species. Comparing the first and last, in order to determine which values to use for the algorithm, one concludes that the first is the most suitable, for the distance between the two lines drawn is most distinct when setting the frontal lobe size against the carapace width. However, Body Depth will remain in the dataset for it can be used for more accurate classification.
 
 ```{r, fig.width=6.5,fig.height=3, fig.cap="A dotplot showing the different seperation distances between the blue and orange purple rock crab species. The dashed line representing the Body depth, and the neutral representing Frontal Lobe Size."}
 # Create a plot comparing two values for x, Body Depth and Frontal Lobe Size
@@ -179,7 +181,7 @@ title = "Body Depth vs Frontal Lobe Size against Carapace Width") +
 ```
 
 
-The resulting graph, discriminated by the third value of the species themselves, shows two distinct lines. With this it can be concluded that the Blue Leptograspus are overall wider than the Orange Leptograspus, and thus this data can be used for machine learning purposes and creating the algorithm that when fed the proper measurements, can determine wether the given crab's data belongs to the Blue Leptograspus or the Orange Leptograspus. 
+The resulting graph, discriminated by the third value of the species themselves, shows four distinct lines. the dashed representing the comparison against Body depth and the straight line against Frontal Lobe Size. With these values it can be concluded that the Blue Leptograspus are overall wider than the Orange Leptograspus, and thus this data can be used for machine learning purposes and creating the algorithm that when fed the proper measurements, can determine whether the given crab's data belongs to an individual belonging to the Blue Leptograspus or one belonging to the Orange Leptograspus. 
 
 ```{r}
 # Create a plot using the cleaned up data
@@ -227,5 +229,7 @@ In order to determine the best classification method for the 'Crab Body Metrics'
 WekaResults <- read.csv(file = "data/WekaResults.csv")
 knitr::kable(WekaResults) 
 ```
+
+Earlier shown in the EDA was the value 
 
 
