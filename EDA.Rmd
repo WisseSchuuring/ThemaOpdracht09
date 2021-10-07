@@ -221,15 +221,6 @@ Speed is not a priority for this algorithm, however Scalability is. The algorith
 
 Using this newly created CleanData.csv file in Weka 3.8, by first removing the identifier attribute by selecting it and pressing 'remove', one can move over to the classify window. There, first running a ZeroR with the 'training set' test option selected will reveal the accuracy of the algorithm to be 50%. this makes sense, as there is an even distribution of both blue and orange purple rock crabs in the dataset. with ZeroR, the algorithm will only look at a single attribute and take it as truth. Simply put, the system will assume every identified attribute shall be the one that is most prominent. This dataset containing 100 blue and 100 orange purple rock crabs, it picks one, and assumes all others are the same as the one it picked. Therefore, a 50% accuracy is expected, as 100/200 * 100 = 50%.
 
-next up using oneR with the 'training set' test option gives an accuracy of 76.5%, with 94 True positives, 6 False positives, 59 True negatives and lastly 41 False negatives. 
-
-Utilising the tree classifier J48, firstly an unpruned tree was created with the test option cross-validation activated with a fold of 5. 
-
-Utilising J48 with the same discriminator, unpruned set to False and test option set to 'training set' results in an accuracy of 96.5%, with 99 True positives, 1 False positive, 94 True negatives and 6 False negatives. setting the unpruned to True results in the exact same tree.
-
-Now changing the test option to 'cross-validation' with a fold value of 10, gives an accuracy of 88%. While worse, it is still surprisingly accurate. after changing the seed to 2, it gives an accuracy of 91%, containing 94 TP, 6 FP, 88 TN and 12 FN.
-
-
 In order to determine the best classification method for the 'Crab Body Metrics', The following methods were used on the data set with test option 'cross-validation', having a fold value of 10. Speed, accuracy, True positives, False positives, True negatives and False negatives were all recorded within a csv file. The results of which are shown below.
 
 ```{r, fig.cap="A table showing the speed and accuracy of the classification method, along with the confusion matrix"}
