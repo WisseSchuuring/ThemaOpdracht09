@@ -81,17 +81,16 @@ library(dplyr)
 
 #Read in the dataset
 CrabData <- read.csv(file = 'data/CrabData.csv')
-CrabData 
 
 #Filter the datasets on their species
 CrabDataB <- filter(CrabData, sp == "B")
 CrabDataO <- filter(CrabData, sp == "O")
 
 #Give the 5 values of the dataset
-summary(CrabData)
+#summary(CrabData)
 
 #Create a plot of both species
-ggplot(CrabData, aes(y = RW, x = BD, color=sex, shape = sp)) +
+plot1 <- ggplot(CrabData, aes(y = RW, x = BD, color=sex, shape = sp)) +
   geom_point() +
   scale_x_continuous() +
   geom_jitter() +
@@ -99,21 +98,21 @@ ggplot(CrabData, aes(y = RW, x = BD, color=sex, shape = sp)) +
   scale_color_manual(values=c("Blue","Orange"))
 
 #Create a plot of only the blue species 
-ggplot(CrabDataB, aes(y = RW, x = BD)) +
+plot2 <- ggplot(CrabDataB, aes(y = RW, x = BD)) +
   geom_point() +
   scale_x_continuous() +
   geom_jitter() +
   geom_smooth(col = "blue")
 
 #Create a plot of only the orange species
-ggplot(CrabDataO, aes(y = RW, x = BD)) +
+plot3 <- ggplot(CrabDataO, aes(y = RW, x = BD)) +
   geom_point() +
   scale_x_continuous() +
   geom_jitter() +
   geom_smooth(col = "orange")
 
 #Create a boxplot
-boxplot(CrabData$RW, CrabData$BD)
+plot4 <- boxplot(CrabData$RW, CrabData$BD)
 
 ```
 The first canonical variate, which differentiates between the two species, represents a contrast
@@ -122,7 +121,7 @@ the blue-form species has a greater relative carapace width than has the orange 
 
 ```{r}
 #Create a plot showing the carapace width against the frontal lobe size of the two species
-ggplot(CrabData, aes(y=CW, x=FL, col=sp)) +
+plot5 <- ggplot(CrabData, aes(y=CW, x=FL, col=sp)) +
   geom_point(alpha=0.5) +
   geom_jitter() +
   scale_colour_manual(values = c("Blue","Orange")) +
@@ -136,7 +135,7 @@ length, identifies males and females within each species; males have a greater r
 length than have females. 
 
 ```{r}
-ggplot(CrabData, aes(y=RW, x=CL, col=sex)) +
+plot6 <- ggplot(CrabData, aes(y=RW, x=CL, col=sex)) +
   geom_point() +
   geom_jitter() +
   scale_colour_manual(values = c("Red","Dark Green"))
@@ -150,20 +149,22 @@ previously determined specific status of the two forms.
 codebook <- read.csv(file = "data/codebook.csv")
 knitr::kable(codebook)
 ```
-
-
-Day 3 
+Day 3  21st of September
 
 Onderzoeksvraag bedenken
 
 Is it possible to create an algorithm which, when given the Frontal Lobe Size and Carapace Width of a purple rock crab, determine whether or not it belongs to the blue or orange species?
 
+Started with creating an EDA. Through analyzing the given data, along with comparison and edits of the dataset itself. With this, I determined that the best identifiers for species difference are the Carapace Width and Frontal Lobe Size.
+
 Day 4 23/09/2021
 
-Beschrijvingen gegeven aan figuren van de dataset. Begonnen met PCA's proberen te maken
+Beschrijvingen gegeven aan figuren van de dataset. Begonnen met PCA's te maken.
 
 
-Day 5-8
+Day 5 28th of September
+
+day 6 wednesday 6th of october
 
 created many graphs showing the difference in body size between the orange and blue subspecies, and by comparison decided Carapace Width and Frontal Lobe Size were the best values to use for determine which crab belongs to which species, upon which the machine learning algorithm can be built. 
 
@@ -176,3 +177,15 @@ Utilising the tree classifier J48, firstly an unpruned tree was created with the
 Utilising J48 with the same discriminator, unpruned set to False and test option set to 'training set' results in an accuracy of 96.5%, with 99 True positives, 1 False positive, 94 True negatives and 6 False negatives. setting the unpruned to True results in the exact same tree.
 
 Now changing the test option to 'cross-validation' with a fold value of 10, gives an accuracy of 88%. While worse, it is still surprisingly accurate. after changing the seed to 2, it gives an accuracy of 91%, containing 94 TP, 6 FP, 88 TN and 12 FN.
+
+day 7 7th of october
+
+Started to investigate the performance of different machine learning algorithms.
+
+```{r, fig.cap="A table showing the speed and accuracy of the classification method, along with the confusion matrix"}
+OldWekaResults <- read.csv(file = "data/OldWekaResults.csv")
+knitr::kable(OldWekaResults) 
+```
+
+these results showed that Simple Logistic works almost perfectly. Upon suggestion I have made a change to the cleaned data file, removing the unneccesairy gender value and opting for body depth instead, for it has a larger impact on deciding wether a creature belongs to one species or the other.
+
