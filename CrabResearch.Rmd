@@ -26,6 +26,7 @@ library(dplyr)
 library(xtable)
 library(ggbiplot)
 library(gridExtra)
+library(cowplot)
 
 CrabData <- read.csv(file = 'data/CrabData.csv')
 
@@ -51,8 +52,42 @@ Out of the 200 rows, 0 of them contain missing values. The data is complete, con
 There is an even distribution of records from both species of Leptograspus, with 50% Blue and 50% orange.
 
 ```{r, echo=FALSE}
+FLRW <- ggplot(CrabData, aes(x=FL, y=RW, col=sp)) + geom_point() +  scale_x_continuous() +
+  geom_jitter() +
+  scale_color_manual(values=c("Blue","Orange"))
+FLCL <- ggplot(CrabData, aes(x=FL, y=CL, col=sp)) + geom_point() +  scale_x_continuous() +
+  geom_jitter() +
+  scale_color_manual(values=c("Blue","Orange"))
+FLCW <- ggplot(CrabData, aes(x=FL, y=CW, col=sp)) + geom_point() +  scale_x_continuous() +
+  geom_jitter() +
+  scale_color_manual(values=c("Blue","Orange"))
+FLBD <- ggplot(CrabData, aes(x=FL, y=BD, col=sp)) + geom_point() +  scale_x_continuous() +
+  geom_jitter() +
+  scale_color_manual(values=c("Blue","Orange"))
 
+RWCL <- ggplot(CrabData, aes(x=RW, y=CL, col=sp)) + geom_point() +  scale_x_continuous() +
+  geom_jitter() +
+  scale_color_manual(values=c("Blue","Orange"))
+RWCW <- ggplot(CrabData, aes(x=RW, y=CW, col=sp)) + geom_point() +  scale_x_continuous() +
+  geom_jitter() +
+  scale_color_manual(values=c("Blue","Orange"))
+RWBD <- ggplot(CrabData, aes(x=RW, y=BD, col=sp)) + geom_point() +  scale_x_continuous() +
+  geom_jitter() +
+  scale_color_manual(values=c("Blue","Orange"))
 
+CLCW <- ggplot(CrabData, aes(x=CL, y=CW, col=sp)) + geom_point() +  scale_x_continuous() +
+  geom_jitter() +
+  scale_color_manual(values=c("Blue","Orange"))
+CLBD <- ggplot(CrabData, aes(x=CL, y=BD, col=sp)) + geom_point() +  scale_x_continuous() +
+  geom_jitter() +
+  scale_color_manual(values=c("Blue","Orange"))
+
+CWBD <- ggplot(CrabData, aes(x=CW, y=BD, col=sp)) + geom_point() +  scale_x_continuous() +
+  geom_jitter() +
+  scale_color_manual(values=c("Blue","Orange"))
+
+plot_grid(FLRW, FLCL, FLCW, FLBD, RWCL)
+plot_grid(RWCW, RWBD, CLCW, CLBD, CWBD)
 ```
 
 ```{r, fig.width=6.5,fig.height=3, fig.cap="A dotplot showing the different carapace width and frontal lobe size between the blue and orange purple rock crab species.", echo=FALSE}
