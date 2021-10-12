@@ -158,7 +158,7 @@ By removing unneeded and unused data, the dataset will be cleaner and more readi
 
 Opening and reading the dataset 'Crab Body Metrics' shows it containing the values frontal lobe size (FL), rear width (RW), carapace length (CL), carapace width (CW) and body depth (BD) in mm, as well as the crabs' gender and species. The dataset contained numeric values that were changed to doubles. Visualising the dataset and plotting out the values suggested in the article by N.A. Campbell and R.J. Mahon ^[2] against one another, the first being Carapace Width against Frontal Lobe Size, discriminated by species. Secondly Carapace Length against Rear Width, discriminated by gender. Lastly Carapace Width against Body Depth, again discriminated by species. Comparing the first and last, in order to determine which values to use for the algorithm, one concludes that the first is the most suitable, for the distance between the two lines drawn is most distinct when setting the frontal lobe size against the carapace width. However, Body Depth will remain in the dataset for it can be used for more accurate classification.
 
-```{r, fig.width=6.5,fig.height=3, fig.cap="A dotplot showing the different seperation distances between the blue and orange purple rock crab species. The dashed line representing the Body depth, and the neutral representing Frontal Lobe Size."}
+```{r, fig.width=6.5,fig.height=3, fig.cap="A dotplot showing the different seperation distances between the blue and orange purple rock crab species. The dashed line representing the Body depth, and the neutral representing Frontal Lobe Size.", echo=FALSE}
 # Create a plot comparing two values for x, Body Depth and Frontal Lobe Size
 ggplot(data = CrabData,  
 mapping = aes( 
@@ -183,7 +183,7 @@ title = "Body Depth vs Frontal Lobe Size against Carapace Width") +
 
 The resulting graph, discriminated by the third value of the species themselves, shows four distinct lines. the dashed representing the comparison against Body depth and the straight line against Frontal Lobe Size. With these values it can be concluded that the Blue Leptograspus are overall wider than the Orange Leptograspus, and thus this data can be used for machine learning purposes and creating the algorithm that when fed the proper measurements, can determine whether the given crab's data belongs to an individual belonging to the Blue Leptograspus or one belonging to the Orange Leptograspus. 
 
-```{r}
+```{r, echo=FALSE}
 # Create a plot using the cleaned up data
 ggplot(data = CleanData,  
 mapping = aes( 
@@ -213,7 +213,7 @@ By removing all unnecessary records, the data set itself has been optimally data
 [1] N.A. Campbell and R.J. Mahon (1974),'A Multivariate Study of Variation in Two Species of Rock Crab of the Genus Leptograpsus', Awt. J. Zool (p.418).
 [2] N.A. Campbell and R.J. Mahon (1974),'A Multivariate Study of Variation in Two Species of Rock Crab of the Genus Leptograpsus', Awt. J. Zool (p.424).
 
-## Determine quality metrics relevant for your research
+## Classification method comparison
 
 ```{r}
 write.csv(CleanData, file = "data/CleanData.csv", row.names = FALSE)
@@ -232,4 +232,9 @@ knitr::kable(WekaResults)
 
 Upon further testing utilizing a CostSensitiveClassifier, it is clear that the Simple Logistic classification method is the most suitable to identify the crab species and thus for creating the algorithm. 
 
+Using the Weka experimenter, the algorithms were run for 100 repetitions each, with a total of 8000 results. 
 
+```{r, fig.cap="A table showing the overall accuracy of the classification method along with the significant after 100 runs of each individual method."}
+ExperimentResults <- read.csv(file = "data/ExperimentResults.csv")
+knitr::kable(ExperimentResults) 
+```

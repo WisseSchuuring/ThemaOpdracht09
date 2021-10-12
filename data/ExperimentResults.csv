@@ -1,0 +1,9 @@
+classification,percent,significant
+ZeroR,50,0.00
+OneR,68.87,9.82
+NaiveBayes,63.43,10.20
+SimpleLogistic,99.72,1.23
+SVM(SMO),97.25,3.91
+IBk,97.57,3.20
+J48,89.80,7.18
+RandomForest,91.95,5.88

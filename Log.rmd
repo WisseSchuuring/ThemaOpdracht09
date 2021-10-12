@@ -7,6 +7,7 @@ output: pdf_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
 
 ```
 
@@ -195,3 +196,16 @@ knitr::kable(WekaResults)
 ```
 
 This results in an accuracy of 100%, perfection.
+
+12th of October
+
+Using Weka's experiment enviroment, I created a new experiment, in which I placed my CleanData.csv file, and let three algorithms run on it. ZeroR for testing, my previously discovered perfect algorithm of SimpleLogistics and lastly Ibk, for it had the second highest score, having a NN value of 3. Letting it run for 100 repetitions and opening the finalised test in the analyse window gives the following result. 
+
+```{r, fig.cap="A table showing the speed and accuracy of the classification method, along with the confusion matrix"}
+ExperimentResults <- read.csv(file = "data/ExperimentResults.csv")
+knitr::kable(ExperimentResults)
+```
+
+With the highest accuracy and the smalles significant (not counting ZeroR) SimpleLogistic shows to be the better classification method. 
+
+Next up I attempted to run 3 ensemble learning meta, those being bagging, stacking and boosting. Bagging is when a classifier method is reused, however the dataset is bootstrapped, meaning the meta runs the same algorithm, just on slightly modified versions of the dataset each repeat. Boosting is when the selected algorithm is run once on a test dataset, after which the meta increases the weight of any mistakes (False positives, False negatives), followed by another run. Any mistakes made in the second run are increased in weight again, and this process is repeated for as many repetitions that are specified. Lastly stacking is when multiple algorithms look at the worth of the output of the individual classification method, after which the impact of said method is weighed against the others. The classification method with the higher accuracy has a bigger weight, while a less accurate method has less impact. 

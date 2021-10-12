@@ -1,9 +1,9 @@
 "classification","sec","percent","TP","FP","TN","FN"
-"ZeroR",0,50,100,0,0,100
-"OneR",0,69,75,25,63,37
-"Naive Bayes",0,63,66,34,60,40
+"ZeroR",0,50,100,100,0,0
+"OneR",0,69,75,37,63,25
+"Naive Bayes",0,63,66,40,60,34
 "Simple Logistic",0.09,100,100,0,100,0
-"SVM(SMO)",0.01,77.5,85,15,70,30
+"SVM(SMO)",0.03,97.5,97,2,98,3
 "Nearest Neigbor(IBk)",0.01,98,98,2,98,2
 "J48",0.01,88,90,10,86,14
-"Random Forest",0.06,92,93,7,91,9
+"Random Forest",0.06,92,93,9,91,7
