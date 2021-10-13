@@ -32,9 +32,10 @@ CrabData <- read.csv(file = 'data/CrabData.csv')
 
 CrabData <- CrabData %>% mutate(
   sp = factor(sp, levels = c("B","O"), 
-  labels = c("Blue Leptograspus","Orange Leptograspus")))
+  labels = c("Blue L. variegatus","Orange L. variegatus")))
 CrabData <- CrabData %>% mutate(
-  sex = factor(sex)
+  sex = factor(sex, levels = c("F", "M"),
+  labels = c("Female", "Male"))
   )
 
 codebook <- read.csv(file = "data/codebook.csv")
@@ -49,93 +50,136 @@ Out of the 200 rows, 0 of them contain missing values. The data is complete, con
 ## Visualisation
 
 
-There is an even distribution of records from both species of Leptograspus, with 50% Blue and 50% orange.
+There is an even distribution of records from both species of L. variegatus, with 50% Blue and 50% orange.
 
-```{r, echo=FALSE}
-FLRW <- ggplot(CrabData, aes(x=FL, y=RW, col=sp)) + geom_point() +  scale_x_continuous() +
+```{r, echo=FALSE, fig.width=6.5,fig.height=5, fig.cap="Placing every attribute against one another, it is notable that Carapace Width, Carapace Length and Body depth cause a good divide, while Rear Width shows no sign of discrimination."}
+sp_FLRW <- ggplot(CrabData, aes(x=FL, y=RW, col=sp)) + geom_point() +  scale_x_continuous() +
   geom_jitter() +
   scale_color_manual(values=c("Blue","Orange")) + guides(color = "none")
-FLCL <- ggplot(CrabData, aes(x=FL, y=CL, col=sp)) + geom_point() +  scale_x_continuous() +
+sp_FLCL <- ggplot(CrabData, aes(x=FL, y=CL, col=sp)) + geom_point() +  scale_x_continuous() +
   geom_jitter() +
   scale_color_manual(values=c("Blue","Orange")) + guides(color = "none")
-FLCW <- ggplot(CrabData, aes(x=FL, y=CW, col=sp)) + geom_point() +  scale_x_continuous() +
+sp_FLCW <- ggplot(CrabData, aes(x=FL, y=CW, col=sp)) + geom_point() +  scale_x_continuous() +
   geom_jitter() +
   scale_color_manual(values=c("Blue","Orange")) + guides(color = "none")
-FLBD <- ggplot(CrabData, aes(x=FL, y=BD, col=sp)) + geom_point() +  scale_x_continuous() +
-  geom_jitter() +
-  scale_color_manual(values=c("Blue","Orange")) + guides(color = "none")
-
-RWCL <- ggplot(CrabData, aes(x=RW, y=CL, col=sp)) + geom_point() +  scale_x_continuous() +
-  geom_jitter() +
-  scale_color_manual(values=c("Blue","Orange")) + guides(color = "none")
-RWCW <- ggplot(CrabData, aes(x=RW, y=CW, col=sp)) + geom_point() +  scale_x_continuous() +
-  geom_jitter() +
-  scale_color_manual(values=c("Blue","Orange")) + guides(color = "none")
-RWBD <- ggplot(CrabData, aes(x=RW, y=BD, col=sp)) + geom_point() +  scale_x_continuous() +
+sp_FLBD <- ggplot(CrabData, aes(x=FL, y=BD, col=sp)) + geom_point() +  scale_x_continuous() +
   geom_jitter() +
   scale_color_manual(values=c("Blue","Orange")) + guides(color = "none")
 
-CLCW <- ggplot(CrabData, aes(x=CL, y=CW, col=sp)) + geom_point() +  scale_x_continuous() +
+sp_RWCL <- ggplot(CrabData, aes(x=RW, y=CL, col=sp)) + geom_point() +  scale_x_continuous() +
   geom_jitter() +
   scale_color_manual(values=c("Blue","Orange")) + guides(color = "none")
-CLBD <- ggplot(CrabData, aes(x=CL, y=BD, col=sp)) + geom_point() +  scale_x_continuous() +
+sp_RWCW <- ggplot(CrabData, aes(x=RW, y=CW, col=sp)) + geom_point() +  scale_x_continuous() +
+  geom_jitter() +
+  scale_color_manual(values=c("Blue","Orange")) + guides(color = "none")
+sp_RWBD <- ggplot(CrabData, aes(x=RW, y=BD, col=sp)) + geom_point() +  scale_x_continuous() +
   geom_jitter() +
   scale_color_manual(values=c("Blue","Orange")) + guides(color = "none")
 
-CWBD <- ggplot(CrabData, aes(x=CW, y=BD, col=sp)) + geom_point() +  scale_x_continuous() +
+sp_CLCW <- ggplot(CrabData, aes(x=CL, y=CW, col=sp)) + geom_point() +  scale_x_continuous() +
+  geom_jitter() +
+  scale_color_manual(values=c("Blue","Orange")) + guides(color = "none")
+sp_BDCL <- ggplot(CrabData, aes(x=BD, y=CL, col=sp)) + geom_point() +  scale_x_continuous() +
+  geom_jitter() +
+  scale_color_manual(values=c("Blue","Orange")) + guides(color = "none")
+
+sp_BDCW <- ggplot(CrabData, aes(x=BD, y=CW, col=sp)) + geom_point() +  scale_x_continuous() +
   geom_jitter() +
   scale_color_manual(values=c("Blue","Orange")) + guides(color ="none")
 
-plot_grid(FLRW, FLCL, FLCW, FLBD, RWCL, RWCW, RWBD, CLCW, CLBD, CWBD)
+plot_grid(sp_FLRW, sp_FLCL, sp_FLCW, sp_FLBD, sp_RWCL, sp_RWCW, sp_RWBD, sp_CLCW, sp_BDCL, sp_BDCW)
 ```
 
-```{r, fig.width=6.5,fig.height=3, fig.cap="A dotplot showing the different carapace width and frontal lobe size between the blue and orange purple rock crab species.", echo=FALSE}
+```{r, fig.width=6.5,fig.height=3, fig.cap="In comparison, the Frontal Lobe Size (A) causes a bigger diversion between the two species compared to the Body Depth (B), making it our first attribute for determining the purple rock crab's species.", echo=FALSE}
 
 #Create a plot comparing the CW to the FL in order to determine the species
-ggplot(CrabData, aes(y = CW, x = FL, color=sp)) +
+FroLob <- ggplot(CrabData, aes(y = CW, x = FL, color=sp)) +
   geom_point() +
   scale_x_continuous() +
   geom_jitter() +
   scale_color_manual(values=c("Blue","Orange")) +
   xlab("Frontal Lobe Size (mm)") +
   ylab("Carapace Width (mm)") +
-  ggtitle("Carapace Width vs Frontal Lobe Size of the Purple Rock Crab")+
-  labs(col="Species of Crab")
+  guides(color = "none")
+
+#Create a plot comparing the CW to the BD to determine the species of the crab
+BodDep <- ggplot(CrabData, aes(y = CW, x = BD, color=sp)) +
+  geom_point() +
+  scale_x_continuous() +
+  geom_jitter() +
+  scale_color_manual(values=c("Blue","Orange")) +
+  xlab("Body Depth (mm)") +
+  ylab("Carapace Width (mm)") +
+  guides(color = "none")
+
+plot_grid(FroLob, BodDep, labels=c("A","B"))
 ```
 
-The most prominent separation between the blue and orange species can be visualized when discriminating upon the carapace width (CW) and the frontal lobe size (FL). These are the optimal variables with which one could classify the species of Leptograpsus.
+The most prominent separation between the blue and orange species can be visualized when discriminating upon the carapace width (CW) against the frontal lobe size (FL), and the former against the Body Depth (BD). These are the optimal variables with which one could classify the species of Leptograpsus. Although discriminating upon carapace width (CW) and body depth (BD) too can be used to determine the species of the Purple rock crab, it is less reliant and separate than discriminating on carapace width (CW) and the frontal lobe size (FL).
 
-```{r, fig.width=6,fig.height=3, fig.cap="A dotplot showing the different carapace width and frontal lobe size between the female and male purple rock crab.", echo=FALSE}
-# 
-# #Create a plot comparing the RW to the CL to determine the gender of the crab
-# ggplot(CrabData, aes(y = RW, x = CL, color=sex)) +
-#   geom_point() +
-#   scale_x_continuous() +
-#   geom_jitter() +
-#   scale_color_manual(values=c("Pink","Light Blue"), labels=c("Female","Male")) +
-#   xlab("Carapace Length (mm)") +
-#   ylab("Rear Width (mm)") +
-#   ggtitle("Carapace Length vs Rear Width of the Purple Rock Crab")+
-#   labs(col="Gender of Crab")
-``` 
 
-Discriminating upon carapace length (CL) and rear width (RW) shows the gender difference and can be used to identify individuals of either crab species' gender.
+```{r, fig.width=6.5,fig.height=5, fig.cap="Placing every attribute against one another, when determining the gender of the L. variegatus, it is revealed that in contrast to species differentiation, the Rear Width has the largest impact in determining the gender of either species of purple rock crab.", echo=FALSE}
+sex_FLRW <- ggplot(CrabData, aes(x=FL, y=RW, col=sex)) + geom_point() +  scale_x_continuous() +
+  geom_jitter() +
+  scale_color_manual(values=c("Pink","Light Blue")) + guides(color = "none")
+sex_FLCL <- ggplot(CrabData, aes(x=FL, y=CL, col=sex)) + geom_point() +  scale_x_continuous() +
+  geom_jitter() +
+  scale_color_manual(values=c("Pink","Light Blue")) + guides(color = "none")
+sex_FLCW <- ggplot(CrabData, aes(x=FL, y=CW, col=sex)) + geom_point() +  scale_x_continuous() +
+  geom_jitter() +
+  scale_color_manual(values=c("Pink","Light Blue")) + guides(color = "none")
+sex_FLBD <- ggplot(CrabData, aes(x=FL, y=BD, col=sex)) + geom_point() +  scale_x_continuous() +
+  geom_jitter() +
+  scale_color_manual(values=c("Pink","Light Blue")) + guides(color = "none")
 
-```{r, fig.width=6.5,fig.height=3, fig.cap="A dotplot showing the different carapace width and body depth between the blue and orange purple rock crab species.", echo=FALSE}
-# 
-# #Create a plot comparing the CW to the BD to determine the species of the crab
-# ggplot(CrabData, aes(y = CW, x = BD, color=sp)) +
-#   geom_point() +
-#   scale_x_continuous() +
-#   geom_jitter() +
-#   scale_color_manual(values=c("Blue","Orange")) +
-#   xlab("Body Depth (mm)") +
-#   ylab("Carapace Width (mm)") +
-#   ggtitle("Carapace Width vs Body Depth of the Purple Rock Crab")+
-#   labs(col="Species of Crab")
+sex_RWCL <- ggplot(CrabData, aes(x=RW, y=CL, col=sex)) + geom_point() +  scale_x_continuous() +
+  geom_jitter() +
+  scale_color_manual(values=c("Pink","Light Blue")) + guides(color = "none")
+sex_RWCW <- ggplot(CrabData, aes(x=RW, y=CW, col=sex)) + geom_point() +  scale_x_continuous() +
+  geom_jitter() +
+  scale_color_manual(values=c("Pink","Light Blue")) + guides(color = "none")
+sex_RWBD <- ggplot(CrabData, aes(x=RW, y=BD, col=sex)) + geom_point() +  scale_x_continuous() +
+  geom_jitter() +
+  scale_color_manual(values=c("Pink","Light Blue")) + guides(color = "none")
+
+sex_CLCW <- ggplot(CrabData, aes(x=CL, y=CW, col=sex)) + geom_point() +  scale_x_continuous() +
+  geom_jitter() +
+  scale_color_manual(values=c("Pink","Light Blue")) + guides(color = "none")
+sex_BDCL <- ggplot(CrabData, aes(x=BD, y=CL, col=sex)) + geom_point() +  scale_x_continuous() +
+  geom_jitter() +
+  scale_color_manual(values=c("Pink","Light Blue")) + guides(color = "none")
+
+sex_BDCW <- ggplot(CrabData, aes(x=BD, y=CW, col=sex)) + geom_point() +  scale_x_continuous() +
+  geom_jitter() +
+  scale_color_manual(values=c("Pink","Light Blue")) + guides(color ="none")
+
+plot_grid(sex_FLRW, sex_FLCL, sex_FLCW, sex_FLBD, sex_RWCL, sex_RWCW, sex_RWBD, sex_CLCW, sex_BDCL, sex_BDCW)
 ```
 
-Although discriminating upon carapace width (CW) and body depth (BD) too can be used to determine the species of the Purple rock crab, it is less reliant and separate than discriminating on carapace width (CW) and the frontal lobe size (FL).
+
+Discriminating upon rear width (RW) against carapace length (CL), and the former against Carapace Width (CW) shows the gender difference and can be used to identify individuals of either crab species' gender.
+
+
+```{r, fig.width=6.5,fig.height=3, fig.cap="Carapace Width vs Frontal Lobe Size of the L. variegatus, discriminated by species and gender. it is shown that there is no correlation between gender and species when it comes to the Carapace Width and Frontal Lobe Size.", echo=FALSE}
+# Create a plot using the cleaned up data
+ggplot(data = CrabData,  
+mapping = aes( 
+x = FL,  
+y = CW,  
+color = sp,
+shape= sex)) + 
+   geom_jitter(alpha = 0.5) +  
+   scale_color_manual(values=c("Blue","Orange")) +
+   labs( 
+x = "Frontal Lobe Size (mm)",  
+y = "Carapace Width (mm)",  
+colour = "Crab Species",
+shape = "Crab Sex",)
+```
+
+
+Combining the two results shows that there is indeed no correlation between the gender and the species of the L. variegatus. 
+
 
 ```{r, fig.width=6.5,fig.height=3, fig.cap= "PCA showing how the rear width has a higher factor than any of the other values recorded within the dataset.", echo=FALSE}
 
@@ -145,21 +189,23 @@ ggbiplot(CrabData.pca,
          main="Principal component analysis of the Crab body metrics")
 ```
 
+
 As seen in the PCA, all variables have about equal weight to the direction of the data, with the exception of Rear Width, which makes the RW value the one with the most information gain.
+
 
 ```{r, echo=FALSE}
 #clean up the data by removing unused data
 CleanData <- CrabData[c(4,7,8,1)]
-str(CleanData)
 ```
 
-By removing unneeded and unused data, the dataset will be cleaner and more readily usable for the algorithm that will utilize it.
+By removing the unnecessary attributes Rear Width (RW), Carapace Length (CL) and Gender (sex), the dataset will be cleaner and more readily usable for the algorithm that will utilize it.
 
 ## Results
 
-Opening and reading the dataset 'Crab Body Metrics' shows it containing the values frontal lobe size (FL), rear width (RW), carapace length (CL), carapace width (CW) and body depth (BD) in mm, as well as the crabs' gender and species. The dataset contained numeric values that were changed to doubles. Visualising the dataset and plotting out the values suggested in the article by N.A. Campbell and R.J. Mahon ^[2] against one another, the first being Carapace Width against Frontal Lobe Size, discriminated by species. Secondly Carapace Length against Rear Width, discriminated by gender. Lastly Carapace Width against Body Depth, again discriminated by species. Comparing the first and last, in order to determine which values to use for the algorithm, one concludes that the first is the most suitable, for the distance between the two lines drawn is most distinct when setting the frontal lobe size against the carapace width. However, Body Depth will remain in the dataset for it can be used for more accurate classification. This data can be used for machine learning purposes and creating the algorithm that when fed the proper measurements, can determine whether the given crab's data belongs to an individual belonging to the Blue Leptograspus or one belonging to the Orange Leptograspus. 
+Opening and reading the dataset 'Crab Body Metrics' shows it containing the values frontal lobe size (FL), rear width (RW), carapace length (CL), carapace width (CW) and body depth (BD) in mm, as well as the crabs' gender and species. The dataset contained numeric values that were changed to doubles. Visualising the dataset and plotting out the values suggested in the article by N.A. Campbell and R.J. Mahon ^[2] against one another, the first being Carapace Width against Frontal Lobe Size, discriminated by species. Secondly Carapace Length against Rear Width, discriminated by gender. Lastly Carapace Width against Body Depth, again discriminated by species. Comparing the first and last, in order to determine which values to use for the algorithm, one concludes that the first is the most suitable, for the distance between the two lines drawn is most distinct when setting the frontal lobe size against the carapace width. However, Body Depth will remain in the dataset for it can be used for more accurate classification. This data can be used for machine learning purposes and creating the algorithm that when fed the proper measurements, can determine whether the given crab's data belongs to an individual belonging to the blue or orange L. variegatus. 
 
-```{r, echo=FALSE}
+
+```{r, echo=FALSE, fig.cap="Carapace Width vs Frontal Lobe Size of L. variegatus"}
 # Create a plot using the cleaned up data
 ggplot(data = CleanData,  
 mapping = aes( 
@@ -172,9 +218,9 @@ color = sp)) +
    labs( 
 x = "Frontal Lobe Size (mm)",  
 y = "Carapace Width (mm)",  
-colour = "Crab Species",
-title = "Carapace Width vs Frontal Lobe Size of the Purple Rock Crab")
+colour = "Crab Species")
 ```
+
 
 ## Discussion
 
@@ -215,3 +261,10 @@ ExperimentResults <- read.csv(file = "data/ExperimentResults.csv")
 knitr::kable(ExperimentResults) 
 ```
  As expected, SimpleLogistic has the highest accuracy rating, along with the smallest significant (excluding ZeroR). 
+ 
+## Ensemble Learning
+
+```{r, echo=FALSE}
+MetaResults <- read.csv(file = "data/MetaResults.csv")
+knitr::kable(MetaResults)
+```
